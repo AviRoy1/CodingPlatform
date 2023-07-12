@@ -4,7 +4,6 @@ export interface IUser extends Document {
     _id: mongoose.Schema.Types.ObjectId;
     name: string;
     email: string;
-    username: string;
     password: string;
     problemSolved: number;
     isAdmin: Boolean,
@@ -14,7 +13,6 @@ export interface IUser extends Document {
 const userSchema = new mongoose.Schema(
     {
         name: {type:String, require:true},
-        username: {type: String, require: true, trim: true},
         email: {type:String, require:true, trim:true, unique:true},
         password: {type:String ,require: true, trim: true},
         problemSolved: {type: Number, default: 0},
