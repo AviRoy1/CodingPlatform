@@ -5,6 +5,7 @@ export interface ITestcase extends Document {
     input: string;
     output: string;
     problemId: number;
+    number: number;
     masterjudgeId : number;
     timelimit: number;
     createdAt: Date;
@@ -15,6 +16,7 @@ const testcaseSchema = new mongoose.Schema(
         input: {type:String, },
         output: {type:String,},
         problemId: {type:Number, require:true},
+        number: {type:Number, require:true},
         masterjudgeId: {type:Number ,require: true},
         createdAt: {type: Date}
     }
