@@ -14,9 +14,9 @@ export interface IQuestion extends Document {
 const questionSchema = new mongoose.Schema(
     {
         name: {type:String, require:true},
-        body: {type:String, require:true, trim:true, unique:true},
-        problemId: {type:Number},
-        problemCode: {type: String},
+        body: {type:String, },
+        problemId: {type:Number,require:true},
+        problemCode: {type: String,},
         masterjudgeId: {type:Number ,require: true},
         submissions: {type: Number, default: 0},
         createdAt: {type: Date}
