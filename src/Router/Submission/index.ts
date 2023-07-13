@@ -6,8 +6,7 @@ import axios from 'axios';
 import { getErrorMessage } from '../../utils/joi.util';
 import verifytoken from "../../middleware/verifyToken";
 import User from "../../model/User";
-import Question from "../../model/Questions";
-
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 const router = express.Router();
@@ -120,6 +119,20 @@ router.get(
                         // console.log(element.result)
                 });
               if (response.status === 200) {
+                const transport = nodemailer.createTransport({
+                    host: "sandbox.smtp.mailtrap.io",
+                    port: 2525,
+                    auth: {
+                      user: process.env.NODEMAILER_USERID,
+                      pass: process.env.NODEMAILER_PASS,
+                    },
+                  });
+                  transport.sendMail({
+                    from: "avijit1@gmail.com",
+                    to: user.email,
+                    subject: "Result of your last submission",
+                    html: `<h1>Result - ${result}</h1>`,
+                  });
                 return res.status(200).json({result: result});
               } 
               else {
