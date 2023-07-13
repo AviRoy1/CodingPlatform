@@ -81,4 +81,61 @@ router.post(
 )
 
 
+
+//  Check Submission results
+const submissionresultSchema = joi.object().keys({
+    ids: joi.array().items(joi.number().required()),
+})
+router.get(
+    '/submissionResult',
+    verifytoken,
+    async (req, res, next) => {
+        try {
+          req.body = await submissionresultSchema.validateAsync(req.body);
+          next();
+        } catch (error) {
+          return res.status(422).json({ message: getErrorMessage(error) });
+        }
+    },
+    async (req: any,res) => {
+        const user = await User.findById(req.user.id);
+        if(!user){
+            return res.status(400).json({message: "You have to login to make view submission result"});
+        }
+        var submissionsIds = req.body.ids;
+
+        try {
+            axios
+            .get(`https://8dda95cd.problems.sphere-engine.com/api/v4/submissions?ids=${submissionsIds.join()}&access_token=${process.env.access_token_problem}` )
+            .then(async(response) => {
+                // console.log(response.data )
+                const ans = response.data.items;
+                var result;
+                ans.forEach((element: any) => {
+                        // result = element.result.status.name;
+                        console.log(element.result)
+                });
+              if (response.status === 200) {
+                return res.status(200).json({result: result});
+              } 
+              else {
+                if (response.status === 401) {
+                    console.log('Invalid access token');
+                } else if (response.status === 403) {
+                    console.log('Access denied');
+                } else if (response.status === 404) {
+                    console.log('Problem does not exist');
+                } 
+            }
+            })   
+            
+        } catch (error) {
+          console.log('Connection problem');
+          return res.status(500).json({ message: error });
+        }
+
+    }   
+)
+
+
 export default router;
