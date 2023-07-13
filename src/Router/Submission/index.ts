@@ -111,9 +111,13 @@ router.get(
                 // console.log(response.data )
                 const ans = response.data.items;
                 var result;
-                ans.forEach((element: any) => {
-                        // result = element.result.status.name;
-                        console.log(element.result)
+                ans.forEach(async(element: any) => {
+                        result = element.result.status.name;
+                        if(result==="accepted") {
+                            user.problemSolved += 1;
+                            await user.save();
+                        }
+                        // console.log(element.result)
                 });
               if (response.status === 200) {
                 return res.status(200).json({result: result});
