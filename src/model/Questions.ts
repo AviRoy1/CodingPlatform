@@ -3,22 +3,26 @@ import mongoose, {Document} from 'mongoose';
 export interface IQuestion extends Document {
     _id: mongoose.Schema.Types.ObjectId;
     name: string;
-    problemStatement: string;
-    difficulty: string;
-    Submissions: number;
+    body: string;
+    problemId: number;
+    problemCode: string;
+    submissions: number;
+    masterjudgeId : number;
     createdAt: Date;
 }
 
 const questionSchema = new mongoose.Schema(
     {
         name: {type:String, require:true},
-        problemStatement: {type:String, require:true, trim:true, unique:true},
-        difficulty: {type:String ,require: true, trim: true},
-        Submissions: {type: Number, default: 0},
+        body: {type:String, require:true, trim:true, unique:true},
+        problemId: {type:Number},
+        problemCode: {type: String},
+        masterjudgeId: {type:Number ,require: true},
+        submissions: {type: Number, default: 0},
         createdAt: {type: Date}
     }
 );
 
-const Question = mongoose.model<IQuestion>("User", questionSchema);
+const Question = mongoose.model<IQuestion>("Question", questionSchema);
 
 export default Question;
