@@ -19,18 +19,18 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// // set security HTTP headers
-// app.use(helmet());
+// set security HTTP headers
+app.use(helmet());
 
-// // sanitize request data
-// app.use(mongoSanitize());
+// sanitize request data
+app.use(mongoSanitize());
 
 app.use('/api', allApis);
 
 // send back a 404 error for any unknown api request
-// app.use((_req, _res, next) => {
-//     next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
-// });
+app.use((_req, _res, next) => {
+    next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
+});
 
 // convert error to ApiError, if needed
 app.use(errorConverter);
